@@ -1,14 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
-
+const cors = require('cors');
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
 
 const db = new sqlite3.Database('Tally212.db'); // For demonstration, use in-memory database
-
+app.use(cors());
 // Create tables
 db.run(`
     CREATE TABLE IF NOT EXISTS Ledgers (
@@ -143,15 +143,15 @@ app.use(express.json());
 // Fetch ledgers
 app.get('/ledgers', async (req, res) => {
     const tableName = 'Ledgers';
-
-    const query = `SELECT LedgerName FROM ${tableName}`;
+    console.log("Request Received from App");
+    const query = `SELECT * FROM ${tableName}`;
 
     db.all(query, [], (err, rows) => {
         if (err) {
             console.error('Error executing query:', err.message);
         } else {
             // Process the retrieved rows
-            console.log('Rows:', rows.length);
+            console.log('Sent Ledgers', rows.length);
             res.json(rows);
         }
     });
@@ -680,7 +680,8 @@ app.get('/search', async (req, res) => {
 
 
 app.get('/getPurchaseV', async (req, res) => {
-    console.log("request rec at server");
+    console.log("Request Received from App");
+
     const tableName = 'PurchaseVouchers';
 
     const query = `SELECT * FROM ${tableName}`;
@@ -690,7 +691,7 @@ app.get('/getPurchaseV', async (req, res) => {
             console.error('Error executing query:', err.message);
         } else {
             // Process the retrieved rows
-            console.log('Rows:', rows.length);
+            console.log('Purchase Vouchers Sent', rows.length);
             res.json(rows);
         }
     });
@@ -707,7 +708,7 @@ app.get('/getSalesV', async (req, res) => {
             console.error('Error executing query:', err.message);
         } else {
             // Process the retrieved rows
-            console.log('Rows:', rows.length);
+            console.log('Sales Vouchers Sent ', rows.length);
             res.json(rows);
         }
     });
@@ -723,7 +724,7 @@ app.get('/getPaymentV', async (req, res) => {
             console.error('Error executing query:', err.message);
         } else {
             // Process the retrieved rows
-            console.log('Rows:', rows.length);
+            console.log('Payment Vouchers Sent', rows.length);
             res.json(rows);
         }
     });
@@ -740,7 +741,7 @@ app.get('/getReceiptV', async (req, res) => {
             console.error('Error executing query:', err.message);
         } else {
             // Process the retrieved rows
-            console.log('Rows:', rows.length);
+            console.log('Receipt Vouchers sent', rows.length);
             res.json(rows);
         }
     });
@@ -757,7 +758,7 @@ app.get('/getSaleItems', async (req, res) => {
             console.error('Error executing query:', err.message);
         } else {
             // Process the retrieved rows
-            console.log('Rows:', rows.length);
+            console.log('Sale Items sent', rows.length);
             res.json(rows);
         }
     });
@@ -775,7 +776,7 @@ app.get('/getInventory', async (req, res) => {
             console.error('Error executing query:', err.message);
         } else {
             // Process the retrieved rows
-            console.log('Rows:', rows.length);
+            console.log('Inventory sent', rows.length);
             res.json(rows);
         }
     });
