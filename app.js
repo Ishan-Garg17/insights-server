@@ -467,6 +467,7 @@ app.post('/salesVouchers', async (req, res) => {
                                 console.log('Inserted voucherID:', voucherID);
                                 const inventoryItems = chunk[0]?.INVENTORY_ITEMS;
                                 for (let saleItem of inventoryItems) {
+                                    console.log("sale item sent is", saleItem);
                                     insertSalesItems(voucherID, saleItem)
                                 }
                             }
@@ -477,8 +478,9 @@ app.post('/salesVouchers', async (req, res) => {
                 }
             });
         };
-
-        fetchLedgerID();
+        if (item.VOUCHERNUMBER == 4003) {
+            fetchLedgerID();
+        }
     }
 
     res.json({ success: true, message: 'Array received successfully.' });
