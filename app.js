@@ -333,10 +333,10 @@ app.post('/purchaseVouchers', async (req, res) => {
 app.post('/salesVouchers', async (req, res) => {
     const { chunk } = req.body;
 
-    console.log('vouchers ', chunk[0]?.INVENTORY_ITEMS);
+    console.log('vouchers ', chunk[0]?.NARRATION);
 
     const insertSalesItems = (voucherID, saleItem) => {
-        console.log("insertSales item called", voucherID, saleItem);
+        // console.log("insertSales item called", voucherID, saleItem);
         let {
             STOCKITEM,
             HSNCODE,
@@ -379,7 +379,7 @@ app.post('/salesVouchers', async (req, res) => {
                         if (err) {
                             console.error('Error inserting data:', err);
                         } else {
-                            console.log('Data inserted successfully.');
+                            // console.log('Data inserted successfully.');
                         }
                     });
                 } else {
@@ -410,7 +410,7 @@ app.post('/salesVouchers', async (req, res) => {
                 IGSTSALE,
                 totalAmount,
             } = item;
-
+            console.log("NARRATION IS", NARRATION)
             db.get('SELECT LedgerID FROM Ledgers WHERE LedgerName = ?', [PARTYNAME], (err, row) => {
                 if (err) {
                     console.error(err.message);
@@ -450,7 +450,7 @@ app.post('/salesVouchers', async (req, res) => {
                                 PLACEOFSUPPLY,
                                 PARTYNAME,
                                 VOUCHERNUMBER,
-                                totalAmount, -- Corrected the case
+                                totalAmount,
                                 SHIPPEDBY,
                                 VEHICLENO,
                                 DETAILS,
@@ -462,12 +462,12 @@ app.post('/salesVouchers', async (req, res) => {
                             if (err) {
                                 console.error('Error inserting data:', err);
                             } else {
-                                console.log('Data inserted successfully.');
+                                // console.log('Data inserted successfully.');
                                 voucherID = this.lastID;
-                                console.log('Inserted voucherID:', voucherID);
+                                // console.log('Inserted voucherID:', voucherID);
                                 const inventoryItems = chunk[0]?.INVENTORY_ITEMS;
                                 for (let saleItem of inventoryItems) {
-                                    console.log("sale item sent is", saleItem);
+                                    // console.log("sale item sent is", saleItem);
                                     insertSalesItems(voucherID, saleItem)
                                 }
                             }
@@ -478,9 +478,9 @@ app.post('/salesVouchers', async (req, res) => {
                 }
             });
         };
-        if (item.VOUCHERNUMBER == 4003) {
-            fetchLedgerID();
-        }
+        // if (item.VOUCHERNUMBER == 4003) {
+        fetchLedgerID();
+        // }
     }
 
     res.json({ success: true, message: 'Array received successfully.' });
